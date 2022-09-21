@@ -8,8 +8,8 @@ export interface WortifyFormProps {
 }
 
 export const WortifyForm: React.FC<WortifyFormProps> = ({ onSubmit }) => {
-  const [orangeCharacter, setOrangeCharacter] = React.useState("u");
-  const [otherCharacters, setOtherCharacters] = React.useState("fageln");
+  const [orangeCharacter, setOrangeCharacter] = React.useState("");
+  const [otherCharacters, setOtherCharacters] = React.useState("");
 
   return (
     <form
