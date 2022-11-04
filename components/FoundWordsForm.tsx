@@ -1,4 +1,5 @@
 import * as React from "react";
+import { sanitizeCopiedWords } from "../utils/sanitizeCopiedWords";
 import { Button } from "./forms/Button";
 import { FormTextArea } from "./forms/FormTextarea";
 import { Words } from "./Types";
@@ -15,14 +16,7 @@ export const FoundWordsForm: React.FC<FoundWordsFormProps> = ({ onSubmit }) => {
       className="w-full space-y-2"
       onSubmit={(event) => {
         event.preventDefault();
-        const sanitizedInput = copiedText.split(/^.*\)\s((\w+\s?)*)/gm)[1];
-        if (sanitizedInput == null) {
-          alert("Bitte korrekten Text einfügen");
-        } else {
-          const foundWords = sanitizedInput.toLowerCase().split(" ");
-
-          onSubmit(foundWords);
-        }
+        onSubmit(sanitizeCopiedWords(copiedText));
       }}
     >
       <FormTextArea
@@ -38,6 +32,19 @@ export const FoundWordsForm: React.FC<FoundWordsFormProps> = ({ onSubmit }) => {
       />
 
       <Button type="submit">Zeige Gefundene</Button>
+      <button
+        type="button"
+        className="fixed w-12 h-12 bg-green-500 border border-green-700 rounded-full sm:invisible bottom-4 right-4 xs:visible"
+        onClick={async () => {
+          const text = await navigator.clipboard.readText();
+          if (text) {
+            setCopiedText(text);
+            onSubmit(sanitizeCopiedWords(text));
+          }
+        }}
+      >
+        🔎
+      </button>
     </form>
   );
 };
