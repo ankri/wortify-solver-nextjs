@@ -25,12 +25,22 @@ export const Solutions: React.FC<SolutionsProps> = ({
           &mdash; <strong>Davon gefunden: {foundWords.length}</strong>{" "}
         </>
       ) : null}
-      <ul className="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-6 bg-gray-50 p-2">
+      <ul className="grid p-2 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-6 bg-gray-50">
         {solutions.map((word) => {
           const isFound = foundWords.includes(word);
+          const isOrange = [
+            ...otherCharacters.split(""),
+            orangeCharacter,
+          ].every((character) => word.includes(character));
+
           return (
-            <li key={word}>
-              {isFound ? <strong>{word}</strong> : <>{word}</>}
+            <li
+              key={word}
+              className={`p-1 ${isFound ? "font-bold" : ""} ${
+                isOrange ? "text-orange-700" : ""
+              }`}
+            >
+              {word}
             </li>
           );
         })}

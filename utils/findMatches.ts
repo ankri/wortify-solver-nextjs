@@ -19,5 +19,5 @@ export const findMatches = ({
       return false;
     }
   });
-  return matches;
+  return matches.map((word) => word.toLowerCase());
 };

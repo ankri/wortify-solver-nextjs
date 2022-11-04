@@ -1,26 +1,33 @@
 import * as React from "react";
-import type { GetServerSideProps, NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import { downloadWords } from "../utils/downloadWords";
 import { WortifyForm } from "../components/WortifyForm";
 import { WithWords, WortifyCharacters } from "../components/Types";
 import { Solutions } from "../components/Solutions";
 import { FoundWordsForm } from "../components/FoundWordsForm";
+import { useInitialCharacters } from "../utils/useInitialCharacters";
 
 const Home: NextPage<WithWords> = ({ words }) => {
+  const letters = useInitialCharacters(words);
+
   const [characters, setCharacters] = React.useState<
     WortifyCharacters | undefined
-  >(undefined);
+  >(letters);
+
   const [foundWords, setFoundWords] = React.useState<string[]>([]);
+  const [showSolutions, setShowSolutions] = React.useState(false);
 
   return (
-    <div className="md:w-full xl:w-1/2 mx-auto p-4">
-      <div className="w-full flex flex-col space-y-4">
+    <div className="p-4 mx-auto md:w-full xl:w-1/2">
+      <div className="flex flex-col w-full space-y-4">
         <WortifyForm
+          characters={characters}
           onSubmit={({ orangeCharacter, otherCharacters }) => {
             setCharacters({ orangeCharacter, otherCharacters });
+            setShowSolutions(true);
           }}
         />
-        {characters != null ? (
+        {characters != null && showSolutions ? (
           <div className="space-y-4">
             <Solutions
               otherCharacters={characters.otherCharacters}
@@ -39,7 +46,7 @@ const Home: NextPage<WithWords> = ({ words }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<WithWords> = async () => {
+export const getStaticProps: GetStaticProps<WithWords> = async () => {
   const words = await downloadWords();
 
   return {
@@ -48,5 +55,15 @@ export const getServerSideProps: GetServerSideProps<WithWords> = async () => {
     },
   };
 };
+
+// export const getServerSideProps: GetServerSideProps<WithWords> = async () => {
+//   const words = await downloadWords();
+
+//   return {
+//     props: {
+//       words,
+//     },
+//   };
+// };
 
 export default Home;

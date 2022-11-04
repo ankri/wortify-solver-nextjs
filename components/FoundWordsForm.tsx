@@ -12,12 +12,11 @@ export const FoundWordsForm: React.FC<FoundWordsFormProps> = ({ onSubmit }) => {
 
   return (
     <form
-      className="space-y-2 w-full"
+      className="w-full space-y-2"
       onSubmit={(event) => {
         event.preventDefault();
         const sanitizedInput = copiedText.split(/^.*\)\s((\w+\s?)*)/gm)[1];
         if (sanitizedInput == null) {
-          console.log(sanitizedInput);
           alert("Bitte korrekten Text einfügen");
         } else {
           const foundWords = sanitizedInput.toLowerCase().split(" ");

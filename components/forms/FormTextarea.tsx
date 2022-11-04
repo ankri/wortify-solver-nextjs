@@ -27,7 +27,10 @@ export const FormTextArea: React.FC<FormTextAreaProps> = ({
         <textarea
           value={value}
           onInput={onInput}
-          className="w-full block rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          onFocus={(event) => {
+            event.target.select();
+          }}
+          className="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           id={name}
           name={name}
           pattern="[a-zA-Z]"
