@@ -28,6 +28,9 @@ export const FoundWordsForm: React.FC<FoundWordsFormProps> = ({ onSubmit }) => {
       <FormTextArea
         label="Hier gefundene Wörter einfügen"
         value={copiedText}
+        setValue={(value) => {
+          setCopiedText(value);
+        }}
         onInput={(event) => {
           setCopiedText(event.currentTarget.value);
         }}

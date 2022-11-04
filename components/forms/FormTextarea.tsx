@@ -9,12 +9,13 @@ export type FormTextAreaProps = Omit<
       React.InputHTMLAttributes<HTMLTextAreaElement>,
       "onInput" | "value" | "name"
     >
-  > & { label: string };
+  > & { label: string; setValue: (value: string) => void };
 
 export const FormTextArea: React.FC<FormTextAreaProps> = ({
   label,
   onInput,
   value,
+  setValue,
   name,
   ...props
 }) => {
@@ -27,8 +28,11 @@ export const FormTextArea: React.FC<FormTextAreaProps> = ({
         <textarea
           value={value}
           onInput={onInput}
-          onFocus={(event) => {
-            event.target.select();
+          onFocus={async () => {
+            const text = await navigator.clipboard.readText();
+            if (text) {
+              setValue(text);
+            }
           }}
           className="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           id={name}
